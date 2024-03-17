@@ -1,0 +1,35 @@
+type Adopter = record {
+  id : nat64;
+  name : text;
+  contact_details : text;
+  desired_animal_type : text;
+};
+type Animal = record {
+  id : nat64;
+  age : nat32;
+  name : text;
+  is_adopted : bool;
+  species : text;
+};
+type Error = variant {
+  InvalidInput : record { msg : text };
+  NotFound : record { msg : text };
+};
+type Result = variant { Ok : Animal; Err : Error };
+type Result_1 = variant { Ok; Err : Error };
+type Result_2 = variant { Ok : Adopter; Err : Error };
+service : {
+  add_animal : (text, text, nat32) -> (Result);
+  adopt_animal : (nat64, nat64) -> (Result_1);
+  delete_adopter : (nat64) -> (Result_1);
+  delete_animal : (nat64) -> (Result_1);
+  get_adopter : (nat64) -> (Result_2) query;
+  get_animal : (nat64) -> (Result) query;
+  list_adopters : () -> (vec Adopter) query;
+  list_adopters_of_animal : (nat64) -> (vec Adopter) query;
+  list_animals : () -> (vec Animal) query;
+  register_adopter : (text, text, text) -> (Result_2);
+  release_animal : (nat64) -> (Result_1);
+  update_adopter : (nat64, text, text, text) -> (Result_2);
+  update_animal : (nat64, text, text, nat32) -> (Result);
+}
